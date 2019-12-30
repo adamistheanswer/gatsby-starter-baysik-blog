@@ -1,0 +1,44 @@
+body {
+  -webkit-font-smoothing: antialiased;
+  --bg: white;
+  background-color: var(--bg);
+
+  --textNormal: #222;
+  --bodyCol: #222;
+  --headerCol: #222;
+  --textLink: #2293a7;
+
+  --mobDD: black;
+  --logo: black;
+  --icons: black;
+}
+
+hr {
+  border-bottom: 1px solid var(--textLink);
+  opacity: 0.2;
+  height: 0;
+}
+
+blockquote{
+  color: var(--textNormal);
+  font-size: inherit;
+}
+
+td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.dark {
+  -webkit-font-smoothing: antialiased;
+  --bg: #121212;
+  background-color: var(--bg);
+
+  --textNormal: rgba(255, 255, 255, 0.88);
+  --bodyCol: rgb(184, 184, 184);
+  --headerCol: white;
+  --textLink: #2293a7;
+
+  --mobDD: white;
+  --logo: white;
+  --icons: white;
+}
