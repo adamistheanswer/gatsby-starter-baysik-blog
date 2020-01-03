@@ -26,7 +26,7 @@ gatsby new baysik-blog https://github.com/adamistheanswer/gatsby-starter-baysik-
 Navigate into your new site’s directory and start it up.
 
 ```sh
-cd blog
+cd baysik-blog
 gatsby develop
 ```
 
