@@ -10,6 +10,8 @@
 
 <h4 align="center">A basic starter for creating blogs using Gatsby.</h4>
 
+![Baysik Starter Gatsby](screen.png)
+
 ## Quick Start
 
 #### Create a Gatsby site
