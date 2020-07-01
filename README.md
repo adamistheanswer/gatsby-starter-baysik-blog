@@ -12,7 +12,6 @@
 
 ![Baysik Starter Gatsby](screen.png)
 
-
 ## Quick Start
 
 #### Create a Gatsby site
@@ -23,6 +22,8 @@ Use the Gatsby CLI to create a new site, specifying the Baysik starter.
 # Create a new Gatsby site using the Baysik starter
 gatsby new baysik-blog https://github.com/adamistheanswer/gatsby-starter-baysik-blog
 ```
+
+[Official Gatsby Starter Page](https://www.gatsbyjs.org/starters/adamistheanswer/gatsby-starter-baysik-blog/)
 
 #### Start Developing
 
