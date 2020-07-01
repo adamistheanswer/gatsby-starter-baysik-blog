@@ -6,30 +6,54 @@ import { useMediaQuery } from "react-responsive"
 import "styled-components/macro"
 import Layout from "../components/layout"
 import SEO from "../components/Seo"
+import { Helmet } from "react-helmet"
 
-const PostWrapper = styled.div`
+const PostOverviewWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+`
+
+const MobileWrapper = styled.div`
+  min-height: 100px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
+
+const DesktopWrapper = styled.div`
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `
 
 const BlogIndex = props => {
   const { data } = props
   const siteTitle = data.site.siteMetadata.title
-  const posts = data.allMarkdownRemark.edges
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1000px)" })
+  const posts = data.allMdx.edges
+  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1024px)" })
 
   return (
     <Layout location={props.location} title={siteTitle}>
       <SEO title="Home" />
+      <Helmet>
+        <meta property="og:title" content={data.site.siteMetadata.title} />
+        <meta
+          property="og:description"
+          content={data.site.siteMetadata.description}
+        />
+        <meta property="og:url" content={data.site.siteMetadata.siteUrl} />
+      </Helmet>
       {posts.map(({ node }) => {
         const title = node.frontmatter.title
         return (
           <article key={node.fields.slug}>
             <Link to={node.fields.slug}>
-              <PostWrapper>
+              <PostOverviewWrapper>
                 <div
                   css={`
-                    padding-top: 20px;
                     margin-right: 30px;
                   `}
                 >
@@ -37,33 +61,58 @@ const BlogIndex = props => {
                     fixed={node.frontmatter.cover.childImageSharp.fixed}
                     css={`
                       border-radius: 50%;
-                      z-index: -10;
+                      z-index: -9999;
                     `}
                   />
                 </div>
                 <div>
-                  <header>
-                    {isMobileOrTablet ? (
-                      <h4>
-                        <Link to={node.fields.slug}>{title}</Link>
-                      </h4>
-                    ) : (
-                      <h2>
-                        <Link to={node.fields.slug}>{title}</Link>
-                      </h2>
-                    )}
-                  </header>
-                  <section>
-                    <h4
-                      css={`
-                        margin-top: 0px;
-                      `}
-                    >
-                      {node.frontmatter.description || node.excerpt}
-                    </h4>
-                  </section>
+                  {isMobileOrTablet ? (
+                    <MobileWrapper>
+                      <header>
+                        <h4
+                          css={`
+                            margin-bottom: 10px;
+                            margin-top: 0px;
+                          `}
+                        >
+                          <Link to={node.fields.slug}>{title}</Link>
+                        </h4>
+                      </header>
+                      <section>
+                        <h4
+                          css={`
+                            margin-top: 0px;
+                            margin-bottom: 0px;
+                          `}
+                        >
+                          {node.frontmatter.description || node.excerpt}
+                        </h4>
+                      </section>
+                    </MobileWrapper>
+                  ) : (
+                    <DesktopWrapper>
+                      <header>
+                        <h2
+                          css={`
+                            margin-top: 0px;
+                          `}
+                        >
+                          <Link to={node.fields.slug}>{title}</Link>
+                        </h2>
+                      </header>
+                      <section>
+                        <h4
+                          css={`
+                            margin-top: 0px;
+                          `}
+                        >
+                          {node.frontmatter.description || node.excerpt}
+                        </h4>
+                      </section>
+                    </DesktopWrapper>
+                  )}
                 </div>
-              </PostWrapper>
+              </PostOverviewWrapper>
             </Link>
           </article>
         )
@@ -79,20 +128,26 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+        description
+        siteUrl
       }
     }
-    allMarkdownRemark(
+    allMdx(
       sort: { fields: [frontmatter___date], order: DESC }
-      filter: { fileAbsolutePath: { regex: "/(posts)/.*.md$/" } }
+      filter: { fileAbsolutePath: { regex: "/(posts)/.*.(mdx|md)$/" } }
     ) {
       edges {
         node {
           excerpt
           fields {
             slug
+            readingTime {
+              text
+            }
           }
           frontmatter {
             title
+            date(formatString: "YYYY/MM/DD")
             description
             cover {
               childImageSharp {

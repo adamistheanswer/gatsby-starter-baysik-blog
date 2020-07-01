@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
 import SiteLogo from "../SiteLogo"
@@ -11,67 +11,85 @@ const Image = styled.div`
   padding-top: 10px;
 `
 
+const NavBarWrapper = styled.div`
+  z-index: 999;
+  position: relative;
+`
+
 const NavBar = styled.div`
   position: fixed;
-  width: 100%;
+  width: 100vw;
   top: 0;
   left: 0;
   background: var(--bg);
   z-index: 9999;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  ${({ active }) =>
+    active &&
+    `
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  `}
 `
 
 const FlexContainer = styled.div`
   max-width: 120rem;
-  z-index: 9999;
   display: flex;
   margin: auto;
   padding: 0 2rem;
   justify-content: space-between;
   height: 75px;
   border-bottom: 1px solid var(--logo);
+  ${({ active }) =>
+    active &&
+    `
+    border-bottom: 1px solid rgb(208,208,208);
+  `}
 `
 const Toggles = styled.div`
   display: flex;
   justify-content: space-between;
 `
 const DarkModeAlignmentWrapper = styled.div`
-  padding: 25px 40px 0px 25px;
+  padding: 25px 0px 0px 0px;
 `
 
 const BurgerWrapper = styled.div`
   margin: auto 0;
-  @media (min-width: 1000px) {
+  @media (min-width: 1024px) {
     display: none;
   }
 `
 
-const Navbar = props => {
+const Navbar = () => {
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false)
+
+  const handleNavbar = () => {
+    setIsNavbarOpen(!isNavbarOpen)
+  }
+
   return (
-    <>
-      <NavBar>
-        <FlexContainer>
+    <NavBarWrapper>
+      <NavBar active={isNavbarOpen}>
+        <FlexContainer active={isNavbarOpen}>
+          <DarkModeAlignmentWrapper>
+            <DarkModeToggle />
+          </DarkModeAlignmentWrapper>
           <Image>
             <SiteLogo />
           </Image>
-
           <Toggles>
-            <DarkModeAlignmentWrapper>
-              <DarkModeToggle />
-            </DarkModeAlignmentWrapper>
             <BurgerWrapper>
               <BurgerMenu
-                navbarState={props.navbarState}
-                handleNavbar={props.handleNavbar}
+                navbarState={isNavbarOpen}
+                handleNavbar={handleNavbar}
               />
             </BurgerWrapper>
           </Toggles>
         </FlexContainer>
       </NavBar>
-      <CollapseMenu
-        navbarState={props.navbarState}
-        handleNavbar={props.handleNavbar}
-      />
-    </>
+      {isNavbarOpen && <CollapseMenu />}
+    </NavBarWrapper>
   )
 }
 

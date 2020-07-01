@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { rhythm } from "../utils/typography"
 import SideMenu from "./SideMenu"
 import styled from "styled-components"
@@ -30,21 +30,10 @@ const MobilePadding = styled.div`
   padding-left: 20px;
 `
 
-const MobileNavWrapper = styled.div`
-  z-index: 99999;
-`
-
 const Layout = props => {
   const { location, title, children } = props
   const rootPath = `${__PATH_PREFIX__}/`
-
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1000px)" })
-
-  const [navbarOpen, setNavbarOpen] = useState(false)
-
-  const handleNavbar = () => {
-    setNavbarOpen(!navbarOpen)
-  }
+  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1024px)" })
 
   return (
     <ThemeToggler>
@@ -52,15 +41,10 @@ const Layout = props => {
         <MobilePadding>
           {isMobileOrTablet ? (
             <>
-              <MobileNavWrapper>
-                <MobileNav
-                  navbarState={navbarOpen}
-                  handleNavbar={handleNavbar}
-                />
-              </MobileNavWrapper>
-
+              <MobileNav location={location} />
               <main
                 css={`
+                  position: relative;
                   padding-top: 80px;
                 `}
               >
@@ -81,6 +65,7 @@ const Layout = props => {
                 location={location}
                 rootPath={rootPath}
                 title={title}
+                isSearch={props.isSearch}
               ></SideMenu>
 
               <HorizontalWrapper

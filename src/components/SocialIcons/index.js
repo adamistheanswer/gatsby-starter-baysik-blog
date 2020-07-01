@@ -1,44 +1,36 @@
 import React from "react"
 import styled from "styled-components"
-import {
-  GitHubIcon,
-  FacebookIcon,
-  InstagramIcon,
-  LinkedInIcon,
-} from "../Icons/Icons"
+import { SocialIcon } from "../Icons/SocialIcon"
 
 const SocialIconsWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-`
-
-const SocialIconWrapper = styled.div`
-  padding: 3px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 7px;
 `
 
 const SocialIcons = () => {
   return (
     <SocialIconsWrapper>
-      <SocialIconWrapper>
-        <a href="https://github.com/adamistheanswer">
-          <GitHubIcon />
-        </a>
-      </SocialIconWrapper>
-      <SocialIconWrapper>
-        <a href="https://www.facebook.com/adamistheanswer">
-          <FacebookIcon />
-        </a>
-      </SocialIconWrapper>
-      <SocialIconWrapper>
-        <a href="https://www.instagram.com/adamistheanswer/">
-          <InstagramIcon />
-        </a>
-      </SocialIconWrapper>
-      <SocialIconWrapper>
-        <a href="https://www.linkedin.com/in/adamgrobinson/">
-          <LinkedInIcon />
-        </a>
-      </SocialIconWrapper>
+      <SocialIcon
+        socialIcon={"github"}
+        link={"https://github.com/adamistheanswer"}
+        iconSize={5}
+      />
+      <SocialIcon
+        socialIcon={"facebook"}
+        link={"https://www.facebook.com/adamistheanswer"}
+        iconSize={5}
+      />
+      <SocialIcon
+        socialIcon={"instagram"}
+        link={"https://instagram.com/adamistheanswer"}
+        iconSize={5}
+      />
+      <SocialIcon
+        socialIcon={"linkedin"}
+        link={"https://www.linkedin.com/in/adamgrobinson/"}
+        iconSize={3}
+      />
     </SocialIconsWrapper>
   )
 }

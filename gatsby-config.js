@@ -3,15 +3,9 @@ module.exports = {
     title: `Baysik Blog`,
     author: `G Man`,
     description: `Welcome to Baysik Blog - Take a look at my projects and experiments.`,
-    siteUrl: `https://attackingpixels.com/`,
+    siteUrl: `https://blogblogblog.com/`,
     bio: `I'm a very naughty boy`,
     facebookToken: `YOUR_TOKEN_HERE`,
-    social: {
-      github: `adamistheanswer`,
-      facebook: `adamistheanswer`,
-      instagram: `adamistheanswer`,
-      linkedIn: `adamgrobinson`,
-    },
   },
   plugins: [
     {
@@ -30,26 +24,19 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/content/pages`,
-        name: `pages`,
-      },
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
         path: `${__dirname}/content/assets`,
         name: `assets`,
       },
     },
     {
-      resolve: `gatsby-transformer-remark`,
+      resolve: `gatsby-plugin-mdx`,
       options: {
-        plugins: [
+        extensions: [`.mdx`, `.md`],
+        gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 1200,
-              quality: 95,
             },
           },
           {
@@ -58,14 +45,28 @@ module.exports = {
               wrapperStyle: `margin-bottom: 1.0725rem`,
             },
           },
-          `gatsby-remark-prismjs`,
-          `gatsby-remark-copy-linked-files`,
-          `gatsby-remark-smartypants`,
+          "gatsby-remark-reading-time",
+          {
+            resolve: `gatsby-remark-prismjs`,
+          },
+          {
+            resolve: `gatsby-remark-copy-linked-files`,
+          },
+          {
+            resolve: `gatsby-remark-smartypants`,
+          },
         ],
       },
     },
+    `gatsby-remark-reading-time`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [`gatsby-remark-images`],
+      },
+    },
     `gatsby-plugin-dark-mode`,
     {
       resolve: `gatsby-plugin-google-analytics`,
@@ -74,7 +75,50 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-feed`,
+      resolve: "gatsby-plugin-local-search",
+      options: {
+        name: "pages",
+        engine: "lunr",
+        query: `
+        {
+          allMdx {
+            nodes {
+              id
+              frontmatter {
+                title
+                description
+                cover {
+                  childImageSharp {
+                    fixed {
+                      src
+                    }
+                  }
+                }
+              }
+              fields {
+                slug
+              }
+              rawBody
+            }
+          }
+        }
+        `,
+        ref: "id",
+        index: ["title", "description", "url", "cover", "body"],
+        store: ["title", "description", "url", "cover", "body"],
+        normalizer: ({ data }) =>
+          data.allMdx.nodes.map(node => ({
+            id: node.id,
+            title: node.frontmatter.title,
+            description: node.frontmatter.description,
+            url: node.fields.slug,
+            cover: node.frontmatter.cover.childImageSharp.fixed.src,
+            body: node.rawBody,
+          })),
+      },
+    },
+    {
+      resolve: `gatsby-plugin-feed-mdx`,
       options: {
         query: `
           {
@@ -90,8 +134,8 @@ module.exports = {
         `,
         feeds: [
           {
-            serialize: ({ query: { site, allMarkdownRemark } }) => {
-              return allMarkdownRemark.edges.map(edge => {
+            serialize: ({ query: { site, allMdx } }) => {
+              return allMdx.edges.map(edge => {
                 return Object.assign({}, edge.node.frontmatter, {
                   description: edge.node.excerpt,
                   date: edge.node.frontmatter.date,
@@ -103,7 +147,7 @@ module.exports = {
             },
             query: `
               {
-                allMarkdownRemark(
+                allMdx(
                   sort: { fields: [frontmatter___date], order: DESC }
                   limit: 1000
                 ) {
@@ -121,7 +165,7 @@ module.exports = {
               }
             `,
             output: "/rss.xml",
-            title: "Attacking Pixels RSS Feed",
+            title: "RSS Feed",
             // optional configuration to insert feed reference in pages:
             // if `string` is used, it will be used to create RegExp and then test if pathname of
             // current page satisfied this regular expression;
@@ -136,8 +180,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Attacking Pixels - Adam Robinson`,
-        short_name: `Attacking Pixels - Adam Robinson`,
+        name: `Website Name`,
+        short_name: `Short Name`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#663399`,

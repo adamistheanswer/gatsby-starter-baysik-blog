@@ -2,10 +2,10 @@ import React from "react"
 import { FacebookProvider, Comments } from "react-facebook"
 import styled from "styled-components"
 import { useStaticQuery, graphql } from "gatsby"
+import { ThemeToggler } from "gatsby-plugin-dark-mode"
 
 const CommentsWrapper = styled.div`
   justify-content: center;
-  background: white;
   width: 100%;
 `
 
@@ -24,9 +24,17 @@ const CommentsFB = () => {
   if (windowGlobal) {
     return (
       <CommentsWrapper>
-        <FacebookProvider appId={data.site.siteMetadata.facebookToken}>
-          <Comments width="100%" href={windowGlobal.location.href} />
-        </FacebookProvider>
+        <ThemeToggler>
+          {({ theme }) => (
+            <FacebookProvider appId={data.site.siteMetadata.facebookToken}>
+              <Comments
+                width="100%"
+                colorScheme={theme}
+                href={windowGlobal.location.href}
+              />
+            </FacebookProvider>
+          )}
+        </ThemeToggler>
       </CommentsWrapper>
     )
   } else {

@@ -33,12 +33,6 @@ const Bio = () => {
         siteMetadata {
           author
           bio
-          social {
-            github
-            facebook
-            instagram
-            linkedIn
-          }
         }
       }
     }
@@ -52,22 +46,20 @@ const Bio = () => {
           margin-bottom: ${rhythm(1)};
         `}
       >
-        <a href={`https://attackingpixels.com`}>
-          <Image
-            fixed={data.avatar.childImageSharp.fixed}
-            alt={author}
-            css={`
-              margin-top: 5px;
-              margin-right: ${rhythm(1 / 2)};
-              margin-bottom: 0px;
-              min-height: 60px;
-              max-height: 60px;
-              min-width: 60px;
-              max-width: 60px;
-              border-radius: 50%;
-            `}
-          />
-        </a>
+        <Image
+          fixed={data.avatar.childImageSharp.fixed}
+          alt={author}
+          css={`
+            margin-top: 5px;
+            margin-right: ${rhythm(1 / 2)};
+            margin-bottom: 0px;
+            min-height: 60px;
+            max-height: 60px;
+            min-width: 60px;
+            max-width: 60px;
+            border-radius: 50%;
+          `}
+        />
         <BioTextWrapper>
           <p>
             {author}

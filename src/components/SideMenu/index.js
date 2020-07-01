@@ -1,41 +1,47 @@
-import React from "react"
-import { Link } from "gatsby"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-
+import { useMediaQuery } from "react-responsive"
+import { navigate } from "gatsby"
 import SiteLogo from "../SiteLogo"
 import DarkModeToggle from "../DarkModeToggle"
 import SocialIcons from "../SocialIcons"
-const TopWrapper = styled.div``
+import TextField from "../TextField"
 
-const BottomWrapper = styled.div`
-  padding-bottom: 35px;
-  min-width: 300px;
-  max-width: 300px;
-  position: fixed;
-  display: flex;
-  flex-direction: column-reverse;
-  bottom: 0;
-  align-items: center;
-  text-align: center;
-`
 const SideMenuWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  grid-template-columns: 1fr;
+  grid-gap: 30px;
   padding-top: 25px;
   min-width: 300px;
   max-width: 300px;
   position: fixed;
+  height: 100%;
+  padding-bottom: 100px;
+`
+const TopWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 30px;
+  justify-items: center;
+`
+
+const BottomWrapper = styled.div`
+  padding-top: 35px;
+  min-width: 300px;
+  max-width: 300px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: column-reverse;
+  bottom: 0;
   align-items: center;
-  text-align: center;
 `
 
 const SideLinks = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: -15px;
 `
 
 const StyledLink = styled.a`
@@ -43,86 +49,75 @@ const StyledLink = styled.a`
 `
 
 const SideMenu = props => {
+  const isTallEnough = useMediaQuery({ query: "(min-height: 600px)" })
+  const [searchQuery, setSearchQuery] = useState("")
+
+  useEffect(() => {
+    setSearchQuery(
+      new URLSearchParams(props.location.search).get("keywords") || ""
+    )
+  }, [props.location.search, searchQuery])
+
   return (
     <>
       <SideMenuWrapper>
         <TopWrapper>
           <SiteLogo />
-          {props.location.pathname === props.rootPath ||
-          props.location.pathname === "/about/" ? (
-            <>
-              <h4
-                style={{
-                  paddingTop: 20,
-                  fontFamily: `Montserrat, sans-serif`,
-                  marginTop: 0,
-                }}
-              >
-                <Link
-                  style={{
-                    boxShadow: `none`,
-                    textDecoration: `none`,
-                    color: `inherit`,
-                  }}
-                  to={`/`}
-                >
-                  {props.title}
-                </Link>
-              </h4>
-              <p style={{ paddingTop: "10px" }}>Welcome to Baysik Blog</p>
-              <DarkModeToggle />
-              <SideLinks>
-                {props.location.pathname === "/about/" ? (
-                  <a href="/">Home</a>
-                ) : (
-                  <a href="/about">About</a>
-                )}
-
-                <StyledLink href="https://adamrobinson.dev">
-                  external link
-                </StyledLink>
-              </SideLinks>
-            </>
-          ) : (
-            <>
-              <h4
-                style={{
-                  paddingTop: 20,
-                  fontFamily: `Montserrat, sans-serif`,
-                  marginTop: 0,
-                }}
-              >
-                <Link
-                  style={{
-                    boxShadow: `none`,
-                    textDecoration: `none`,
-                    color: `inherit`,
-                  }}
-                  to={`/`}
-                >
-                  {props.title}
-                </Link>
-              </h4>
-              <p style={{ paddingTop: "10px" }}>Welcome to Baysik Blog</p>
-              <DarkModeToggle />
-              <SideLinks>
-                {props.location.pathname !== "/" && <a href="/">Home</a>}
-
-                {props.location.pathname !== "/about/" && (
-                  <StyledLink href="/about">About</StyledLink>
-                )}
-
-                <StyledLink href="https://adamrobinson.dev">
-                  external link
-                </StyledLink>
-              </SideLinks>
-            </>
+          {isTallEnough && (
+            <p
+              css={`
+                margin-bottom: 0px;
+              `}
+            >
+              Would you would like to know more <StyledLink href="/about">about</StyledLink> this amazing blog?
+            </p>
           )}
+          <DarkModeToggle />
+          <SideLinks>
+            {props.location.pathname === props.rootPath ? (
+              <>
+                {props.location.pathname === "/about/" && (
+                  <StyledLink href="/">Home</StyledLink>
+                )}
+              </>
+            ) : (
+              <>
+                {props.location.pathname !== "/" && (
+                  <StyledLink href="/">Home</StyledLink>
+                )}
+              </>
+            )}
+            {!isTallEnough && <StyledLink href="/about">About</StyledLink>}
+            <StyledLink href="https://adamrobinson.dev">
+              Adam Robinson
+            </StyledLink>
+            <StyledLink href="https://attackingpixels.com">
+              Attacking Pixels
+            </StyledLink>
+            <div
+              css={`
+                margin: 0px 60px 0px 60px;
+              `}
+            >
+              <TextField
+                autoFocus={props.isSearch} // eslint-disable-line
+                search={true}
+                type="search"
+                id="search-input"
+                name="keywords"
+                aria-controls="search-results-count"
+                handleChange={value =>
+                  navigate(`/search?keywords=${encodeURIComponent(value)}`)
+                }
+                value={searchQuery}
+              />
+            </div>
+          </SideLinks>
         </TopWrapper>
+        <BottomWrapper>
+          <SocialIcons />
+        </BottomWrapper>
       </SideMenuWrapper>
-      <BottomWrapper>
-        <SocialIcons />
-      </BottomWrapper>
     </>
   )
 }

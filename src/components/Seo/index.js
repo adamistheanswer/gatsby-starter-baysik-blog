@@ -24,8 +24,6 @@ function SEO({ description, lang, meta, title }) {
     metaDescription = `Hi, I’m Adam Robinson, a software developer and maker based in London. Take a look at my projects and experiments.`
   }
 
-  console.log(metaDescription)
-
   return (
     <Helmet
       htmlAttributes={{
