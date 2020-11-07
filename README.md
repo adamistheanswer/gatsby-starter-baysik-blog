@@ -50,7 +50,7 @@ All notable changes to this project will be documented in this file.
 
 - Dependency updates
 - Major refactor
-- Post catagpries added!
+- Post catagories added!
 
 ## [2.0.0] - 2020-07-01
 
