@@ -9,7 +9,7 @@
 </h1>
 
 <h4 align="center">A basic starter for creating blogs using Gatsby.</h4>
-
+<p align="center"><a href="https://attackingpixels.com">Attacking Pixels Blog - Example<a></p>
 ![Baysik Starter Gatsby](screen.png)
 
 ## Quick Start
