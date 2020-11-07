@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { useMediaQuery } from "react-responsive"
-import { navigate } from "gatsby"
+import { navigate, useStaticQuery } from "gatsby"
+import { graphql } from "gatsby"
 import SiteLogo from "../SiteLogo"
 import DarkModeToggle from "../DarkModeToggle"
-import SocialIcons from "../SocialIcons"
 import TextField from "../TextField"
 
 const SideMenuWrapper = styled.div`
@@ -48,77 +47,82 @@ const StyledLink = styled.a`
   padding-top: 10px;
 `
 
-const SideMenu = props => {
-  const isTallEnough = useMediaQuery({ query: "(min-height: 600px)" })
+const SideMenu = ({ location, rootPath, isSearch }) => {
   const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
-    setSearchQuery(
-      new URLSearchParams(props.location.search).get("keywords") || ""
-    )
-  }, [props.location.search, searchQuery])
+    setSearchQuery(new URLSearchParams(location.search).get("keywords") || "")
+  }, [location.search, searchQuery])
+
+  const data = useStaticQuery(graphql`
+    query CountQuery {
+      allMdx(
+        filter: { fileAbsolutePath: { regex: "/(posts)/.*.(mdx|md)$/" } }
+      ) {
+        edges {
+          node {
+            frontmatter {
+              title
+            }
+          }
+        }
+      }
+    }
+  `)
 
   return (
-    <>
-      <SideMenuWrapper>
-        <TopWrapper>
-          <SiteLogo />
-          {isTallEnough && (
-            <p
-              css={`
-                margin-bottom: 0px;
-              `}
-            >
-              Would you would like to know more <StyledLink href="/about">about</StyledLink> this amazing blog?
-            </p>
+    <SideMenuWrapper>
+      <TopWrapper>
+        <SiteLogo />
+        <p
+          css={`
+            margin-bottom: 0px;
+          `}
+        >
+          Welcome to <StyledLink href="/about">Baysik Blog</StyledLink>, for
+          more gatsby starters check out{" "}
+          <a href="https://attackingpixels.com">Attacking Pixels</a>
+        </p>
+
+        <DarkModeToggle />
+        <SideLinks>
+          {location.pathname === rootPath ? (
+            <>
+              {location.pathname === "/about/" && (
+                <StyledLink href="/">Home</StyledLink>
+              )}
+            </>
+          ) : (
+            <>
+              {location.pathname !== "/" && (
+                <StyledLink href="/">Home</StyledLink>
+              )}
+            </>
           )}
-          <DarkModeToggle />
-          <SideLinks>
-            {props.location.pathname === props.rootPath ? (
-              <>
-                {props.location.pathname === "/about/" && (
-                  <StyledLink href="/">Home</StyledLink>
-                )}
-              </>
-            ) : (
-              <>
-                {props.location.pathname !== "/" && (
-                  <StyledLink href="/">Home</StyledLink>
-                )}
-              </>
-            )}
-            {!isTallEnough && <StyledLink href="/about">About</StyledLink>}
-            <StyledLink href="https://adamrobinson.dev">
-              Adam Robinson
-            </StyledLink>
-            <StyledLink href="https://attackingpixels.com">
-              Attacking Pixels
-            </StyledLink>
-            <div
-              css={`
-                margin: 0px 60px 0px 60px;
-              `}
-            >
-              <TextField
-                autoFocus={props.isSearch} // eslint-disable-line
-                search={true}
-                type="search"
-                id="search-input"
-                name="keywords"
-                aria-controls="search-results-count"
-                handleChange={value =>
-                  navigate(`/search?keywords=${encodeURIComponent(value)}`)
-                }
-                value={searchQuery}
-              />
-            </div>
-          </SideLinks>
-        </TopWrapper>
-        <BottomWrapper>
-          <SocialIcons />
-        </BottomWrapper>
-      </SideMenuWrapper>
-    </>
+        </SideLinks>
+      </TopWrapper>
+      <BottomWrapper>
+        <div
+          css={`
+            margin: 0px 60px 0px 60px;
+          `}
+        >
+          <TextField
+            autoFocus={isSearch} // eslint-disable-line
+            search={true}
+            type="search"
+            id="search-input"
+            name="keywords"
+            aria-controls="search-results-count"
+            handleChange={value =>
+              navigate(`/search?keywords=${encodeURIComponent(value)}`)
+            }
+            value={searchQuery}
+            placeholder={`Search ${data.allMdx.edges.length} Posts`}
+          />
+        </div>
+      </BottomWrapper>
+    </SideMenuWrapper>
   )
 }
 

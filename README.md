@@ -40,10 +40,17 @@ Your site is now running at `http://localhost:8000`!
 
 Note: You'll also see a second link: `http://localhost:8000/___graphql`. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://www.gatsbyjs.org/tutorial/part-five/#introducing-graphiql).
 
-
 ## Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [3.0.0] - 2020-11-07
+
+### Added
+
+- Dependency updates
+- Major refactor
+- Post catagpries added!
 
 ## [2.0.0] - 2020-07-01
 
@@ -53,6 +60,7 @@ All notable changes to this project will be documented in this file.
 - MDX for embedding React components into individual blog posts
 
 ### Changed
+
 - Almost everything
 
 ## [1.0.0] - 2019-11-01
@@ -64,4 +72,3 @@ All notable changes to this project will be documented in this file.
 - [] Quickstart Guide
 - [] User can setup mostly from gatsby-config
 - [] Social Icons & Dev Icons improve implimentation
-- [] Trim the fat!

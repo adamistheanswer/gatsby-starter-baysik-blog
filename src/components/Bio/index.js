@@ -4,15 +4,27 @@ import Image from "gatsby-image"
 import styled from "styled-components"
 import "styled-components/macro"
 import { rhythm } from "../../utils/typography"
+import { SocialIcon } from "react-social-icons"
 
 const BioWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   padding-top: 30px;
 `
+
+const IconsWrapper = styled.div`
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin-bottom: 20px;
+`
+
 const BioInnerWrapper = styled.div`
   display: flex;
+  flex-direction: row;
+  padding-bottom: 0px;
 `
 
 const BioTextWrapper = styled.div`
@@ -41,11 +53,7 @@ const Bio = () => {
   const { author, bio } = data.site.siteMetadata
   return (
     <BioWrapper>
-      <BioInnerWrapper
-        css={`
-          margin-bottom: ${rhythm(1)};
-        `}
-      >
+      <BioInnerWrapper>
         <Image
           fixed={data.avatar.childImageSharp.fixed}
           alt={author}
@@ -67,6 +75,28 @@ const Bio = () => {
           </p>
         </BioTextWrapper>
       </BioInnerWrapper>
+      <IconsWrapper>
+        <SocialIcon
+          url="http://linkedin.com/in/adamgrobinson"
+          style={{ height: 32, width: 32 }}
+          bgColor={"var(--logo)"}
+        />
+        <SocialIcon
+          style={{ height: 32, width: 32 }}
+          url="http://facebook.com/adamistheanswer"
+          bgColor={"var(--logo)"}
+        />
+        <SocialIcon
+          style={{ height: 32, width: 32 }}
+          url="http://instagram.com/adamistheanswer"
+          bgColor={"var(--logo)"}
+        />
+        <SocialIcon
+          style={{ height: 32, width: 32 }}
+          url="http://github.com/adamistheanswer"
+          bgColor={"var(--logo)"}
+        />
+      </IconsWrapper>
     </BioWrapper>
   )
 }

@@ -20,10 +20,6 @@ function SEO({ description, lang, meta, title }) {
 
   let metaDescription = description || site.siteMetadata.description
 
-  if (!metaDescription) {
-    metaDescription = `Hi, I’m Adam Robinson, a software developer and maker based in London. Take a look at my projects and experiments.`
-  }
-
   return (
     <Helmet
       htmlAttributes={{

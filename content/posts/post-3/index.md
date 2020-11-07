@@ -4,6 +4,7 @@ description: Data collection rig 👃🏻
 category: "Rasberry Pi"
 cover: cover.jpg
 date: "2019-01-28T00:00:00.000Z"
+tags: ["tag1", "tag2", "tag3"]
 ---
 
 ### heading

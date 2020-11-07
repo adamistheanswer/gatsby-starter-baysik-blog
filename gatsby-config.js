@@ -3,7 +3,7 @@ module.exports = {
     title: `Baysik Blog`,
     author: `G Man`,
     description: `Welcome to Baysik Blog - Take a look at my projects and experiments.`,
-    siteUrl: `https://blogblogblog.com/`,
+    siteUrl: `https://attackingpixels.com/`,
     bio: `I'm a very naughty boy`,
     facebookToken: `YOUR_TOKEN_HERE`,
   },
@@ -11,7 +11,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-styled-components`,
       options: {
-        displayName: false,
+        displayName: true,
+        minify: true,
       },
     },
     {
@@ -85,6 +86,7 @@ module.exports = {
             nodes {
               id
               frontmatter {
+                tags
                 title
                 description
                 cover {
@@ -104,12 +106,13 @@ module.exports = {
         }
         `,
         ref: "id",
-        index: ["title", "description", "url", "cover", "body"],
-        store: ["title", "description", "url", "cover", "body"],
+        index: ["title", "description", "url", "cover", "body", "tags"],
+        store: ["title", "description", "url", "cover", "body", "tags"],
         normalizer: ({ data }) =>
           data.allMdx.nodes.map(node => ({
             id: node.id,
             title: node.frontmatter.title,
+            tags: node.frontmatter.tags,
             description: node.frontmatter.description,
             url: node.fields.slug,
             cover: node.frontmatter.cover.childImageSharp.fixed.src,
@@ -181,12 +184,11 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Website Name`,
-        short_name: `Short Name`,
+        short_name: `Shortname`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `content/assets/icon.png`,
       },
     },
     `gatsby-plugin-offline`,

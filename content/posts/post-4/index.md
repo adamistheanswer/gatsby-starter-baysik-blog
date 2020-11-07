@@ -4,6 +4,7 @@ description: Design Agency 💼
 category: "Design"
 cover: cover.jpg
 date: "2019-01-26T00:00:00.000Z"
+tags: ["tag1", "tag3"]
 ---
 
 ### heading

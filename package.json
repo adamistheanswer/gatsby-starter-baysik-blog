@@ -2,21 +2,20 @@
   "name": "gatsby-starter-baysik-blog",
   "private": true,
   "description": "A starter for a basic blog powered by Gatsby and Markdown",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "Adam Robinson <adamistheanswer@gmail.com>",
   "bugs": {
-    "url": "https://github.com/adamistheanswer/gatsby/issues"
+    "url":  "https://github.com/gatsbyjs/gatsby-starter-blog"
   },
+  "homepage":"https://attackingpixels.com",
   "dependencies": {
-    "@mdx-js/mdx": "~1.5.8",
-    "@mdx-js/react": "~1.5.8",
+    "@mdx-js/mdx": "^1.6.19",
+    "@mdx-js/react": "^1.6.19",
     "babel-plugin-styled-components": "1.10.6",
-    "babel-plugin-transform-regenerator": "^6.26.0",
     "compass-vertical-rhythm": "1.4.5",
-    "formik": "^2.1.4",
-    "gatsby": "^2.18.4",
+    "gatsby": "^2.25.3",
     "gatsby-image": "^2.2.34",
-    "gatsby-plugin-dark-mode": "1.1.0",
+    "gatsby-plugin-dark-mode": "1.1.2",
     "gatsby-plugin-feed": "^2.3.22",
     "gatsby-plugin-feed-mdx": "^1.0.1",
     "gatsby-plugin-google-analytics": "^2.1.29",
@@ -24,13 +23,13 @@
     "gatsby-plugin-lunr": "^1.5.2",
     "gatsby-plugin-manifest": "^2.2.30",
     "gatsby-plugin-mdx": "^1.2.16",
-    "gatsby-plugin-netlify": "2.1.27",
-    "gatsby-plugin-offline": "^3.0.24",
-    "gatsby-plugin-react-helmet": "^3.1.16",
+    "gatsby-plugin-netlify": "2.4.0",
+    "gatsby-plugin-offline": "^3.3.1",
+    "gatsby-plugin-react-helmet": "^3.3.14",
     "gatsby-plugin-sharp": "^2.3.4",
-    "gatsby-plugin-styled-components": "3.1.14",
+    "gatsby-plugin-styled-components": "3.3.14",
     "gatsby-plugin-typography": "^2.3.18",
-    "gatsby-remark-copy-linked-files": "^2.1.31",
+    "gatsby-remark-copy-linked-files": "^2.3.19",
     "gatsby-remark-images": "^3.1.34",
     "gatsby-remark-prismjs": "^3.3.25",
     "gatsby-remark-reading-time": "^1.1.0",
@@ -40,6 +39,8 @@
     "gatsby-transformer-remark": "^2.6.38",
     "gatsby-transformer-sharp": "^2.3.6",
     "gray-percentage": "2.0.0",
+    "lodash": "^4.17.20",
+    "lodash.debounce": "^4.0.8",
     "lunr": "^2.3.8",
     "prismjs": "^1.17.1",
     "react": "^16.12.0",
@@ -49,8 +50,8 @@
     "react-helmet": "^5.2.1",
     "react-lunr": "^1.0.0",
     "react-responsive": "8.0.1",
+    "react-social-icons": "^4.1.0",
     "react-typography": "^0.16.19",
-    "social-media-icons-react": "^1.0.10",
     "styled-components": "^4.4.1",
     "typeface-merriweather": "0.0.72",
     "typeface-montserrat": "0.0.75",
@@ -59,9 +60,10 @@
     "typography-theme-anonymous": "0.15.10"
   },
   "devDependencies": {
+    "@hot-loader/react-dom": "^17.0.0",
     "prettier": "^1.19.1"
   },
-  "homepage": "https://github.com/gatsbyjs/gatsby-starter-blog#readme",
+
   "keywords": [
     "gatsby"
   ],

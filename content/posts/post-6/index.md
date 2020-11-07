@@ -4,6 +4,7 @@ description: sapien fringilla vitae.
 category: "code"
 cover: cover.jpg
 date: "2019-12-18T00:00:00.000Z"
+tags: ["tag1", "tag2", "tag3"]
 ---
 
 ### heading

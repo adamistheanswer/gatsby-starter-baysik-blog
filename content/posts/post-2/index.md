@@ -4,6 +4,7 @@ description: Building a recumbent 🚴🏻‍♂️
 category: "Experiments"
 cover: cover.jpg
 date: "2019-01-27T00:00:00.000Z"
+tags: ["tag1", "tag2", "tag3"]
 ---
 
 ### heading

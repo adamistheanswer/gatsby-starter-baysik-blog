@@ -1,42 +1,40 @@
-import React from "react"
-import { Link, graphql } from "gatsby"
-import Image from "gatsby-image"
-import styled from "styled-components"
-import { useMediaQuery } from "react-responsive"
-import "styled-components/macro"
+import React, { useState } from "react"
+import chunk from "lodash/chunk"
+import { graphql } from "gatsby"
+import PostItem from "../components/PostItem"
 import Layout from "../components/layout"
+import "styled-components/macro"
+import Helmet from "react-helmet"
 import SEO from "../components/Seo"
-import { Helmet } from "react-helmet"
+import useEvent from "../hooks/useEvent"
 
-const PostOverviewWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
+const Index = ({ location, data }) => {
+  const [postsToShow, setPostsToShow] = useState(10)
+  const [ticking, setTicking] = useState(false)
 
-const MobileWrapper = styled.div`
-  min-height: 100px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`
-
-const DesktopWrapper = styled.div`
-  min-height: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`
-
-const BlogIndex = props => {
-  const { data } = props
-  const siteTitle = data.site.siteMetadata.title
   const posts = data.allMdx.edges
-  const isMobileOrTablet = useMediaQuery({ query: "(max-width: 1024px)" })
+
+  const update = () => {
+    const distanceToBottom =
+      document.documentElement.offsetHeight -
+      (window.scrollY + window.innerHeight)
+    if (distanceToBottom < 100) {
+      setPostsToShow(postsToShow + 10)
+    }
+    setTicking(false)
+  }
+
+  const handleScroll = () => {
+    if (!ticking || posts.length > postsToShow) {
+      setTicking(true)
+      requestAnimationFrame(() => update())
+    }
+  }
+
+  useEvent(`scroll`, handleScroll)
 
   return (
-    <Layout location={props.location} title={siteTitle}>
+    <Layout postCount={posts.length} location={location}>
       <SEO title="Home" />
       <Helmet>
         <meta property="og:title" content={data.site.siteMetadata.title} />
@@ -46,90 +44,45 @@ const BlogIndex = props => {
         />
         <meta property="og:url" content={data.site.siteMetadata.siteUrl} />
       </Helmet>
-      {posts.map(({ node }) => {
-        const title = node.frontmatter.title
-        return (
-          <article key={node.fields.slug}>
-            <Link to={node.fields.slug}>
-              <PostOverviewWrapper>
-                <div
-                  css={`
-                    margin-right: 30px;
-                  `}
-                >
-                  <Image
-                    fixed={node.frontmatter.cover.childImageSharp.fixed}
-                    css={`
-                      border-radius: 50%;
-                      z-index: -9999;
-                    `}
-                  />
-                </div>
-                <div>
-                  {isMobileOrTablet ? (
-                    <MobileWrapper>
-                      <header>
-                        <h4
-                          css={`
-                            margin-bottom: 10px;
-                            margin-top: 0px;
-                          `}
-                        >
-                          <Link to={node.fields.slug}>{title}</Link>
-                        </h4>
-                      </header>
-                      <section>
-                        <h4
-                          css={`
-                            margin-top: 0px;
-                            margin-bottom: 0px;
-                          `}
-                        >
-                          {node.frontmatter.description || node.excerpt}
-                        </h4>
-                      </section>
-                    </MobileWrapper>
-                  ) : (
-                    <DesktopWrapper>
-                      <header>
-                        <h2
-                          css={`
-                            margin-top: 0px;
-                          `}
-                        >
-                          <Link to={node.fields.slug}>{title}</Link>
-                        </h2>
-                      </header>
-                      <section>
-                        <h4
-                          css={`
-                            margin-top: 0px;
-                          `}
-                        >
-                          {node.frontmatter.description || node.excerpt}
-                        </h4>
-                      </section>
-                    </DesktopWrapper>
-                  )}
-                </div>
-              </PostOverviewWrapper>
-            </Link>
-          </article>
-        )
-      })}
+      {/* posts */}
+      {chunk(posts.slice(0, postsToShow), 3).map((chunk, i) => (
+        <div key={`chunk-${i}`}>
+          {chunk.map(post => {
+            const { slug } = post.node.fields
+            const {
+              title,
+              cover,
+              description,
+              tags,
+              excerpt,
+            } = post.node.frontmatter
+            const blogImgSrc = cover.childImageSharp.fixed
+
+            return (
+              <PostItem
+                key={title + description}
+                slug={slug}
+                tags={tags}
+                description={description}
+                title={title}
+                excerpt={excerpt}
+                imageSrc={blogImgSrc}
+              />
+            )
+          })}
+        </div>
+      ))}
     </Layout>
   )
 }
 
-export default BlogIndex
+export default Index
 
 export const pageQuery = graphql`
   query {
     site {
       siteMetadata {
         title
-        description
-        siteUrl
       }
     }
     allMdx(
@@ -149,6 +102,7 @@ export const pageQuery = graphql`
             title
             date(formatString: "YYYY/MM/DD")
             description
+            tags
             cover {
               childImageSharp {
                 fixed(width: 75, height: 75) {
