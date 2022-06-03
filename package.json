@@ -22,7 +22,7 @@
     "gatsby-plugin-local-search": "^1.1.1",
     "gatsby-plugin-lunr": "^1.5.2",
     "gatsby-plugin-manifest": "^2.2.30",
-    "gatsby-plugin-mdx": "^1.2.16",
+    "gatsby-plugin-mdx": "^2.14.1",
     "gatsby-plugin-netlify": "2.4.0",
     "gatsby-plugin-offline": "^3.3.1",
     "gatsby-plugin-react-helmet": "^3.3.14",
